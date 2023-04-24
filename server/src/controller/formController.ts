@@ -1,8 +1,7 @@
 import { RequestHandler } from "express";
-import { PrismaClient } from "@prisma/client";
+import { Form, PrismaClient } from "@prisma/client";
 
 import bcrypt from "bcrypt";
-import { User } from "../model/User.model";
 
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -11,7 +10,7 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 
-export const getAllUser: RequestHandler = async (req, res, next) => {
+export const forms: RequestHandler = async (req, res, next) => {
   try {
     const users = res.locals.data;
     const currentPage = res.locals.currentPage;
@@ -28,13 +27,13 @@ export const getAllUser: RequestHandler = async (req, res, next) => {
 
 export const register: RequestHandler = async (req, res, next) => {
   try {
-    const { name, email, password, role }: User = req.body;
+    const { fullName, email, phone, password }: Form = req.body;
 
     if (!email || !password) {
       throw new Error("can't be blank");
     }
 
-    const checkUser = await prisma.user.findUnique({
+    const checkUser = await prisma.form.findUnique({
       where: {
         email,
       },
@@ -46,8 +45,8 @@ export const register: RequestHandler = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword, role },
+    const user = await prisma.form.create({
+      data: { fullName, email, phone, password: hashedPassword },
     });
 
     res.status(201).json({ user });
@@ -61,7 +60,7 @@ export const login: RequestHandler = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const user = await prisma.user.findUniqueOrThrow({ where: { email } });
+    const user = await prisma.form.findUniqueOrThrow({ where: { email } });
 
     if (!user) throw new Error("invalid user");
 

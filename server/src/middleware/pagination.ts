@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { Prisma, PrismaClient, User } from "@prisma/client";
-import { Book } from "../model/Book.model";
+import { Form, Prisma, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 interface SearchPaginationSortOptions {
   model: Prisma.ModelName;
-  searchableFields: Array<keyof User> | Array<keyof Book>;
+  searchableFields: Array<keyof Form>
 }
 
 interface SearchPaginationSortArgs {

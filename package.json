@@ -4,7 +4,7 @@
   "description": "Starter project for ExpressJS with React + Vite using tRPC",
   "main": "index.js",
   "scripts": {
-    "dev": "npm start --workspace=client & npm start --workspace=server"
+    "dev": "npm run dev --workspace=client & npm start --workspace=server"
   },
   "workspaces": [
     "./client",
