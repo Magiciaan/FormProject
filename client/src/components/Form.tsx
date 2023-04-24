@@ -28,7 +28,7 @@ const Form = () => {
 
             <label htmlFor="phone" className={`${labelStyles}`}>
                 Phone:
-                <input id="phone" type="text" className={`${inputStyles}`} {...register("phone")}/>
+                <input id="phone" type="number" className={`${inputStyles}`} {...register("phone")}/>
             </label>
 
             <label htmlFor="email" className={`${labelStyles}`}>
