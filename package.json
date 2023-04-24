@@ -1,35 +1,22 @@
 {
-  "name": "trpc",
+  "name": "t3-app-1",
   "version": "1.0.0",
-  "description": "",
+  "description": "Starter project for ExpressJS with React + Vite using tRPC",
   "main": "index.js",
   "scripts": {
-    "start": "npx nodemon server.ts"
+    "dev": "npm start --workspace=client & npm start --workspace=server"
   },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/bcrypt": "^5.0.0",
-    "@types/express": "^4.17.17",
-    "@types/jsonwebtoken": "^9.0.1",
-    "nodemon": "^2.0.22",
-    "prisma": "^4.12.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.0.3"
-  },
-  "dependencies": {
-    "@prisma/client": "^4.12.0",
-    "@types/body-parser": "^1.19.2",
-    "@types/node": "^18.15.11",
-    "bcrypt": "^5.1.0",
-    "body-parser": "^1.20.2",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "express-validator": "^6.15.0",
-    "jsonwebtoken": "^9.0.0",
-    "uuid": "^9.0.0"
-  }
+  "workspaces": [
+    "./client",
+    "./server"
+  ],
+  "keywords": [
+    "ExpressJS",
+    "React",
+    "Vite",
+    "tRPC",
+    "typescript"
+  ],
+  "author": "Truly Mittal <trulymittal@gmail.com> (https://www.trulymittal.com/)",
+  "license": "ISC"
 }
