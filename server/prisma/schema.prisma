@@ -12,9 +12,19 @@ datasource db {
 }
 
 model Form {
-  id       String @id @unique @default(uuid())
+  id       String  @id @unique @default(uuid())
   fullName String
-  phone    Int    @unique
-  email    String @unique
-  password String @db.VarChar(12)
+  phone    Int     @unique
+  email    String  @unique
+  password String  @db.VarChar(12)
+  profile  Image[]
+}
+
+model Image {
+  id        String   @id @unique @default(uuid())
+  author    Form     @relation(fields: [authorId], references: [id])
+  authorId  String
+  fileName  String
+  filePath  String
+  createdAt DateTime @default(now())
 }
