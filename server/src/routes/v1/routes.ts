@@ -1,9 +1,9 @@
 import { Router } from "express";
 import {
-  register,
   login,
   activeUser,
   forms,
+  submit,
 } from "../../controller/formController";
 import { registerSchema } from "../../utils/registerValidator";
 import { registerValidation } from "../../middleware/checkEmail";
@@ -22,7 +22,7 @@ router.get(
   forms
 );
 
-router.post("/register", registerSchema, registerValidation, register);
+router.post("/submit", registerSchema, registerValidation, submit);
 router.post("/login", login);
 router.post("/me", verifyJWT, activeUser);
 

@@ -25,7 +25,7 @@ export const forms: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const register: RequestHandler = async (req, res, next) => {
+export const submit: RequestHandler = async (req, res, next) => {
   try {
     const { fullName, email, phone, password }: Form = req.body;
 
