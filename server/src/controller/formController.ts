@@ -1,23 +1,14 @@
 import { RequestHandler } from "express";
-import { Form, Image, PrismaClient } from "@prisma/client";
-import multer from "multer";
+import { Form, PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-
+import fs from "fs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import upload from "../utils/multer";
 
 dotenv.config();
 
 const prisma = new PrismaClient();
-
-export type form = {
-  id: string;
-  fullName: string;
-  phone: number;
-  email: string;
-  password: string;
-  profile: Image;
-};
 
 export const forms: RequestHandler = async (req, res, next) => {
   try {
@@ -34,7 +25,7 @@ export const forms: RequestHandler = async (req, res, next) => {
 
 export const submit: RequestHandler = async (req, res, next) => {
   try {
-    const { fullName, email, phone, password, profile }: form = req.body;
+    const { fullName, email, phone, password }: Form = req.body;
 
     if (!email || !password) {
       throw new Error("can't be blank");
@@ -51,12 +42,6 @@ export const submit: RequestHandler = async (req, res, next) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    if (profile) {
-      const uploads = multer({ dest: __dirname + "../datas" });
-      uploads.array("files");
-      console.log(uploads);
-    }
 
     const user = await prisma.form.create({
       data: { fullName, email, phone, password: hashedPassword },
@@ -101,3 +86,14 @@ export const activeUser: RequestHandler = async (req, res, next) => {
     res.status(400).json({ success: false, message });
   }
 };
+
+export default function (): RequestHandler {
+  return function fileUpload(req, res, next) {
+    try {
+      console.log(req.files);
+      return res.json(req.files);
+    } catch (error) {
+      next(error);
+    }
+  };
+}
