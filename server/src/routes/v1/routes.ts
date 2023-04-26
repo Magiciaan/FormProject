@@ -1,31 +1,21 @@
 import { Router } from "express";
-import {
-  login,
-  activeUser,
-  forms,
-  submit,
-} from "../../controller/formController";
-import fileUpload from "../../controller/formController";
-import { registerSchema } from "../../utils/registerValidator";
-import { registerValidation } from "../../middleware/checkEmail";
+import { getAllForms } from "../../controller/formController";
+import { uploadFile } from "../../controller/formController";
+// import { registerSchema } from "../../utils/registerValidator";
+// import { registerValidation } from "../../middleware/checkEmail";
 import { searchPaginationSortMiddleware } from "../../middleware/pagination";
-import verifyJWT from "../../middleware/verifyJWT";
-// import { checkUserRole } from "../../middleware/verifyRole";
-import upload from "../../utils/multer";
+import upload from "../../middleware/fileUpload";
 
 const router = Router();
 
 router.get(
-  "/forms",
+  "/getAllForms",
   searchPaginationSortMiddleware({
     model: "Form",
     searchableFields: ["fullName", "email"],
   }),
-  forms
+  getAllForms
 );
-router.post("/upload", upload.array("file"), fileUpload());
-router.post("/submit", registerSchema, registerValidation, submit);
-router.post("/login", login);
-router.post("/me", verifyJWT, activeUser);
+router.post("/upload", upload, uploadFile);
 
 export default router;
