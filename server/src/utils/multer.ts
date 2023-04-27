@@ -23,5 +23,4 @@ const upload = multer({
     cb(null, allowedExt.includes(path.extname(file.originalname))),
 }).single("file")
 
-
 export = upload;

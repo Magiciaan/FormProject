@@ -12,12 +12,20 @@ datasource db {
 }
 
 model Form {
-  id       String @id @unique @default(uuid())
+  id       String  @id @unique @default(uuid())
   fullName String
-  phone    String @unique
-  email    String @unique
+  phone    String  @unique
+  email    String  @unique
   password String
   profile  String?
+}
+
+model File {
+  id         String @id @unique @default(uuid())
+  filename   String
+  secure_url String
+  bytes      Int
+  format     String
 }
 
 // model Image {

@@ -1,10 +1,9 @@
 import { RequestHandler } from "express";
-import { Form, PrismaClient } from "@prisma/client";
+import { File, Form, PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-import fs from "fs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import upload from "../utils/multer";
+import { cloudinary } from "../services/cloudinary";
 
 dotenv.config();
 
@@ -29,7 +28,6 @@ export const submit: RequestHandler = async (req, res, next) => {
     if (!email || !password) {
       throw new Error("can't be blank");
     }
-
     const profile: any = `localhost:${process.env.PORT}/${req.file?.filename}`;
 
     const checkUser = await prisma.form.findUnique({
@@ -41,7 +39,25 @@ export const submit: RequestHandler = async (req, res, next) => {
     if (checkUser) {
       throw new Error("User exists");
     }
+    const uploadedFile: any = await cloudinary.uploader.upload(
+      req.file?.path as string,
+      {
+        folder: "UploadedFiles",
+        resource_type: "auto",
+      }
+    );
 
+    const filename: any = req.file?.originalname;
+    const { secure_url, bytes, format } = uploadedFile;
+
+    const file: File = await prisma.file.create({
+      data: {
+        filename,
+        bytes,
+        secure_url,
+        format,
+      },
+    });
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.form.create({
@@ -50,11 +66,11 @@ export const submit: RequestHandler = async (req, res, next) => {
         email,
         phone,
         password: hashedPassword,
-        profile,
+        profile: secure_url,
       },
     });
 
-    return res.status(201).json({ user });
+    return res.status(201).json({ user, file });
   } catch (error) {
     console.log(error);
     res.status(400).json({ success: false, message: "email already exists" });
