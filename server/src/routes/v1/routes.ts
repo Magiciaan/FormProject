@@ -5,7 +5,6 @@ import {
   forms,
   submit,
 } from "../../controller/formController";
-import fileUpload from "../../controller/formController";
 import { registerSchema } from "../../utils/registerValidator";
 import { registerValidation } from "../../middleware/checkEmail";
 import { searchPaginationSortMiddleware } from "../../middleware/pagination";
@@ -23,8 +22,13 @@ router.get(
   }),
   forms
 );
-router.post("/upload", upload.array("file"), fileUpload());
-router.post("/submit", registerSchema, registerValidation, submit);
+router.post(
+  "/submit",
+  registerSchema,
+  registerValidation,
+  upload,
+  submit
+);
 router.post("/login", login);
 router.post("/me", verifyJWT, activeUser);
 
