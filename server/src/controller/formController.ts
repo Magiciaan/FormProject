@@ -26,11 +26,12 @@ export const forms: RequestHandler = async (req, res, next) => {
 export const submit: RequestHandler = async (req, res, next) => {
   try {
     const { fullName, email, phone, password }: Form = req.body;
-
     if (!email || !password) {
       throw new Error("can't be blank");
     }
 
+    const profile : any = req.file?.filename;
+    
     const checkUser = await prisma.form.findUnique({
       where: {
         email,
@@ -44,11 +45,18 @@ export const submit: RequestHandler = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.form.create({
-      data: { fullName, email, phone, password: hashedPassword },
+      data: {
+        fullName,
+        email,
+        phone,
+        password: hashedPassword,
+        profile,
+      },
     });
 
     return res.status(201).json({ user });
   } catch (error) {
+    console.log(error);
     res.status(400).json({ success: false, message: "email already exists" });
     // next(error);
   }
@@ -86,14 +94,3 @@ export const activeUser: RequestHandler = async (req, res, next) => {
     res.status(400).json({ success: false, message });
   }
 };
-
-export default function (): RequestHandler {
-  return function fileUpload(req, res, next) {
-    try {
-      console.log(req.files);
-      return res.json(req.files);
-    } catch (error) {
-      next(error);
-    }
-  };
-}

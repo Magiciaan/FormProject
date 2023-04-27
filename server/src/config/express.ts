@@ -4,6 +4,7 @@ import cors from "cors"
 import routes from "../routes/v1/index";
 
 const app = express();
+app.use(express.static("UploadedFiles"));
 app.use(cors()) // allows requests from all IPs
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
