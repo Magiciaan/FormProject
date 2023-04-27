@@ -1,8 +1,7 @@
 import { Router } from "express";
-import { getAllForms } from "../../controller/formController";
-import { uploadFile } from "../../controller/formController";
-// import { registerSchema } from "../../utils/registerValidator";
-// import { registerValidation } from "../../middleware/checkEmail";
+import { getAllForms, uploadFile } from "../../controller/formController";
+import { registerSchema } from "../../../utils/registerValidator";
+import { registerValidation } from "../../middleware/checkEmail";
 import { searchPaginationSortMiddleware } from "../../middleware/pagination";
 import upload from "../../middleware/fileUpload";
 
@@ -16,6 +15,6 @@ router.get(
   }),
   getAllForms
 );
-router.post("/upload", upload, uploadFile);
+router.post("/upload", upload, registerSchema, registerValidation, uploadFile);
 
 export default router;

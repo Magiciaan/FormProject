@@ -13,6 +13,14 @@ model Form {
   fullName String
   phone    String @unique
   email    String @unique
-  password String @db.VarChar(12)
+  password String
   profile  String
+}
+
+model File {
+  id         String @id @unique @default(uuid())
+  filename   String
+  secure_url String
+  bytes      Int
+  format     String
 }
