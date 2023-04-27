@@ -1,5 +1,6 @@
 import multer from "multer";
 import path from "path";
+import { v4 as uuidv4 } from 'uuid';
 
 const allowedExt = [".png", ".jpeg"];
 
@@ -9,7 +10,7 @@ const storage = multer.diskStorage({
   },
 
   filename: (req, file, cb): void => {
-    cb(null, `${Date.now()}${file.originalname}`);
+    cb(null, `${uuidv4()}${file.originalname}`);
   },
 });
 

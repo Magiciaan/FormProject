@@ -30,8 +30,8 @@ export const submit: RequestHandler = async (req, res, next) => {
       throw new Error("can't be blank");
     }
 
-    const profile : any = req.file?.filename;
-    
+    const profile: any = `localhost:${process.env.PORT}/${req.file?.filename}`;
+
     const checkUser = await prisma.form.findUnique({
       where: {
         email,

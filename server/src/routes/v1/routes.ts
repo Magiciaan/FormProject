@@ -24,9 +24,9 @@ router.get(
 );
 router.post(
   "/submit",
+  upload,
   registerSchema,
   registerValidation,
-  upload,
   submit
 );
 router.post("/login", login);
