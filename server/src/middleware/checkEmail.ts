@@ -8,6 +8,7 @@ export function registerValidation(
 ) {
   const error = validationResult(req);
   if (!error.isEmpty()) {
+    console.log(error)
     return res.status(400).json({ error: error.array() });
   }
 
